@@ -1,0 +1,615 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --rosa: #ff4fbc;
+    --rosa-claro: #ffb4e5;
+    --azul: #45d9ff;
+    --violeta: #a66bff;
+    --dorado: #ffe779;
+    --texto: #fff4ff;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    isolation: isolate;
+    color: var(--texto);
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+        radial-gradient(ellipse at 15% 15%, #651a91 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 35%, #073d79 0%, transparent 40%),
+        linear-gradient(145deg, #10051e, #1c0b36 55%, #080f29);
+}
+
+button {
+    font: inherit;
+}
+
+#efectos {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.particula {
+    position: absolute;
+    top: -50px;
+    left: var(--izquierda);
+    opacity: 0;
+    color: var(--color);
+    font-size: var(--tamano);
+    text-shadow: 0 0 8px currentColor, 0 0 22px currentColor;
+    animation: caer var(--duracion) linear forwards;
+    will-change: transform, opacity;
+}
+
+.encabezado {
+    padding: 55px 20px 35px;
+    text-align: center;
+}
+
+.insignia {
+    display: inline-block;
+    padding: 9px 16px;
+    border: 1px solid #ff70d580;
+    border-radius: 30px;
+    background: #38134899;
+    color: var(--rosa-claro);
+    font-size: .72rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    box-shadow: 0 0 20px #ff4fbc30;
+}
+
+h1 {
+    margin: 22px 0 14px;
+    font: 500 clamp(2.3rem, 7vw, 4.3rem) Georgia, serif;
+    text-shadow: 0 0 24px #a66bff80;
+}
+
+h1 span {
+    color: var(--rosa-claro);
+    text-shadow: 0 0 15px #ff4fbc, 0 0 35px #ff4fbc90;
+}
+
+.subtitulo {
+    max-width: 540px;
+    margin: auto;
+    color: #e3d5ff;
+    line-height: 1.8;
+}
+
+main {
+    width: min(920px, 92%);
+    margin: auto;
+}
+
+.panel,
+.despedida {
+    margin-bottom: 28px;
+    padding: 30px 22px;
+    border: 1px solid #c08aff42;
+    border-radius: 25px;
+    background: linear-gradient(145deg, #21103bef, #101c3bed);
+    box-shadow: 0 0 30px #a66bff12, 0 18px 40px #0004;
+    text-align: center;
+    backdrop-filter: blur(12px);
+}
+
+.panel h2,
+.despedida h2 {
+    margin: 12px 0;
+    font: 500 1.75rem Georgia, serif;
+    color: #fff;
+    text-shadow: 0 0 16px #ff4fbc35;
+}
+
+.panel > p,
+.despedida > p {
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #dfd6f5;
+    line-height: 1.8;
+}
+
+.icono-principal {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 0 12px #ff4fbc);
+    animation: brillar 3s ease-in-out infinite alternate;
+}
+
+.estadisticas {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin: 25px 0 18px;
+}
+
+.dato {
+    min-width: 130px;
+    padding: 16px;
+    border: 1px solid #45d9ff50;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #182c52, #321342);
+    box-shadow: inset 0 0 18px #45d9ff0b, 0 0 15px #45d9ff10;
+}
+
+.dato span {
+    display: block;
+    color: var(--azul);
+    font-size: 1.9rem;
+    font-weight: bold;
+    text-shadow: 0 0 14px #45d9ff90;
+}
+
+.dato small {
+    color: #e3d9f9;
+}
+
+.proxima-flor {
+    color: var(--rosa-claro) !important;
+    font-size: .92rem;
+}
+
+.jardin-seccion {
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid #45d9ff75;
+    border-radius: 26px;
+    background: #0b1530;
+    box-shadow: 0 0 25px #45d9ff30, 0 0 55px #a66bff16;
+}
+
+.cielo {
+    height: 155px;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 50% 100%, #423176, transparent 65%),
+        linear-gradient(180deg, #09091e, #17143b);
+}
+
+.luna {
+    position: absolute;
+    top: 15px;
+    right: 13%;
+    color: #fff5bf;
+    font-size: 3.8rem;
+    text-shadow: 0 0 15px #ffe779, 0 0 35px #ffe77990;
+}
+
+.estrella {
+    position: absolute;
+    color: #fff;
+    text-shadow: 0 0 10px #45d9ff, 0 0 25px #a66bff;
+    animation: titilar 2s ease-in-out infinite alternate;
+}
+
+.estrella1 { top: 25px; left: 15%; }
+.estrella2 { top: 66px; left: 36%; animation-delay: .5s; }
+.estrella3 { top: 38px; right: 35%; animation-delay: 1s; }
+.estrella4 { top: 93px; right: 17%; animation-delay: .7s; }
+.estrella5 { top: 20px; left: 55%; animation-delay: 1.3s; }
+
+.jardin {
+    min-height: 240px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 4px 0;
+    padding: 12px 8px 22px;
+    background:
+        radial-gradient(ellipse at 50% 100%, #174c51, transparent 65%),
+        linear-gradient(180deg, #17143b, #10364a 50%, #123b35);
+}
+
+.suelo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+    border-radius: 50% 50% 0 0 / 25% 25% 0 0;
+    background: linear-gradient(90deg, #173d37, #287b58, #173d37);
+    box-shadow: 0 -4px 20px #45ffae25;
+}
+
+.flor {
+    width: 58px;
+    height: var(--altura, 145px);
+    flex: 0 0 58px;
+    position: relative;
+    z-index: 1;
+    transform-origin: bottom center;
+    animation: crecer 1.2s cubic-bezier(.2, .8, .3, 1) both;
+    animation-delay: var(--retraso, 0s);
+}
+
+.tallo {
+    position: absolute;
+    bottom: 0;
+    left: 28px;
+    width: 4px;
+    height: 76%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #23764a, #65f3a0);
+    box-shadow: 0 0 8px #45ffae40;
+}
+
+.hoja {
+    position: absolute;
+    width: 21px;
+    height: 10px;
+    background: #45e78b;
+    border-radius: 100% 0 100% 0;
+}
+
+.hoja.izquierda {
+    bottom: 36%;
+    left: 8px;
+    transform: rotate(24deg);
+}
+
+.hoja.derecha {
+    bottom: 52%;
+    right: 5px;
+    transform: rotate(70deg) scaleX(-1);
+}
+
+.cabeza {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 7px var(--color-flor));
+    animation: flor-brillante 3s ease-in-out infinite alternate;
+}
+
+.petalo {
+    position: absolute;
+    width: 17px;
+    height: 22px;
+    top: 0;
+    left: 13.5px;
+    border-radius: 50% 50% 42% 42%;
+    background: var(--color-flor, #ff4fbc);
+    transform-origin: 50% 22px;
+}
+
+.centro {
+    position: absolute;
+    z-index: 2;
+    top: 13px;
+    left: 13px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--dorado);
+    box-shadow: 0 0 10px var(--dorado), 0 0 22px #ffe77990;
+}
+
+.pie-jardin {
+    padding: 18px 12px;
+    background: #11132d;
+    color: #cdeaff;
+    text-align: center;
+    font-size: .9rem;
+}
+
+.sobre {
+    font-size: 2.7rem;
+    animation: latido 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px #ff4fbc);
+}
+
+.despedida {
+    border-color: #ff4fbc55;
+}
+
+.despedida button,
+.carta > button:last-child {
+    padding: 13px 24px;
+    margin-top: 20px;
+    border: 1px solid #ffffff45;
+    border-radius: 30px;
+    color: white;
+    background: linear-gradient(100deg, #ff238d, #a044ff 55%, #178dff);
+    box-shadow: 0 0 20px #ff4fbc40, 0 0 30px #45d9ff18;
+    cursor: pointer;
+    transition: transform .2s, filter .2s;
+}
+
+.despedida button:hover,
+.carta > button:last-child:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.2);
+}
+
+footer {
+    padding: 20px 15px 35px;
+    color: var(--rosa-claro);
+    text-align: center;
+    line-height: 1.8;
+}
+
+footer p {
+    color: #c5cfff;
+    font-size: .85rem;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    padding: 20px;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    background: #070412ed;
+    backdrop-filter: blur(10px);
+}
+
+.modal.visible {
+    display: flex;
+    animation: aparecer .3s ease;
+}
+
+.carta {
+    position: relative;
+    width: min(520px, 100%);
+    padding: 36px 28px;
+    border: 1px solid #ff4fbc70;
+    border-radius: 23px;
+    background: linear-gradient(145deg, #25103b, #101b39);
+    box-shadow: 0 0 30px #ff4fbc25, 0 0 55px #45d9ff20;
+    text-align: center;
+}
+
+.cerrar {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    border: none;
+    background: transparent;
+    color: var(--rosa-claro);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.flor-carta {
+    font-size: 2.7rem;
+    filter: drop-shadow(0 0 12px #ff4fbc);
+}
+
+.carta h2 {
+    margin: 12px 0 22px;
+    color: var(--rosa-claro);
+    font: 500 1.7rem Georgia, serif;
+}
+
+.texto-carta {
+    color: #f1eaff;
+    line-height: 1.85;
+    text-align: left;
+}
+
+.texto-carta p {
+    margin-bottom: 14px;
+}
+
+.firma {
+    color: var(--azul);
+    font-weight: bold;
+}
+
+@keyframes caer {
+    0% {
+        transform: translate3d(0, -5vh, 0) rotate(0deg);
+        opacity: 0;
+    }
+    10% { opacity: .95; }
+    50% {
+        transform: translate3d(var(--balanceo), 50vh, 0) rotate(180deg);
+    }
+    90% { opacity: .8; }
+    100% {
+        transform: translate3d(calc(var(--balanceo) * -1), 110vh, 0)
+                   rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes crecer {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+}
+
+@keyframes titilar {
+    from { opacity: .3; transform: scale(.75); }
+    to { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.09); }
+}
+
+@keyframes brillar {
+    from { filter: drop-shadow(0 0 5px #ff4fbc); }
+    to { filter: drop-shadow(0 0 17px #45d9ff); }
+}
+
+@keyframes flor-brillante {
+    from { filter: drop-shadow(0 0 5px var(--color-flor)); }
+    to { filter: drop-shadow(0 0 15px var(--color-flor)); }
+}
+
+@keyframes aparecer {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+    .encabezado { padding-top: 38px; }
+
+    .panel, .despedida {
+        padding: 25px 15px;
+    }
+
+    .estadisticas { gap: 8px; }
+
+    .dato {
+        min-width: 0;
+        flex: 1;
+        padding: 12px 6px;
+    }
+
+    .dato small { font-size: .72rem; }
+
+    .flor {
+        width: 45px;
+        flex-basis: 45px;
+    }
+
+    .tallo { left: 21px; }
+
+    .carta { padding: 35px 22px 25px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* CAPA DE ANIMACIONES */
+#efectos {
+    position: fixed !important;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* Corazones, flores y estrellas que caen */
+.particula {
+    display: block;
+    position: absolute;
+    top: -60px;
+    left: var(--izquierda);
+    color: var(--color);
+    font-size: var(--tamano);
+    line-height: 1;
+    opacity: 0;
+    text-shadow:
+        0 0 8px currentColor,
+        0 0 20px currentColor,
+        0 0 35px currentColor;
+    animation: lluviaMagica var(--duracion) linear forwards;
+    will-change: transform, opacity;
+}
+
+/* Corazón grande y brillante en el fondo */
+.corazon-pulso {
+    position: fixed;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    color: #ff299b;
+    font-size: clamp(180px, 45vw, 420px);
+    opacity: .09;
+    text-shadow:
+        0 0 25px #ff299b,
+        0 0 65px #ff299b,
+        0 0 100px #a66bff;
+    pointer-events: none;
+    animation: latidoFondo 2.5s ease-in-out infinite;
+}
+
+/* Cada pétalo tiene una posición propia */
+.cabeza {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translateX(-50%);
+}
+
+.petalo {
+    position: absolute;
+    top: 0;
+    left: 13.5px;
+    width: 17px;
+    height: 22px;
+    border-radius: 50% 50% 42% 42%;
+    background: var(--color-flor, #ff4fbc);
+    transform-origin: 50% 22px;
+    box-shadow: 0 0 10px var(--color-flor, #ff4fbc);
+}
+
+.centro {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffe779;
+    box-shadow: 0 0 12px #ffe779, 0 0 24px #ffe779;
+}
+
+@keyframes lluviaMagica {
+    0% {
+        transform: translate3d(0, -5vh, 0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    50% {
+        transform:
+            translate3d(var(--balanceo), 50vh, 0)
+            rotate(180deg);
+        opacity: .9;
+    }
+
+    90% {
+        opacity: .75;
+    }
+
+    100% {
+        transform:
+            translate3d(calc(var(--balanceo) * -1), 110vh, 0)
+            rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes latidoFondo {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
