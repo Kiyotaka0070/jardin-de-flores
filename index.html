@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Un Jardín Mágico para Jazmín</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent-blue: #4fa8ff;
+  --accent-teal: #36d1dc;
+  --accent-purple: #7b2cbf;
+  --glass-bg: rgba(18, 22, 45, 0.68);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --text-main: #f0f6ff;
+  --text-sub: #b8c7e0;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{width:100%;height:100%;overflow-x:hidden}
+body{
+  min-height:100vh;
+  color:var(--text-main);
+  font-family:"Plus Jakarta Sans",sans-serif;
+  background:#090d1a;
+  background-image: radial-gradient(circle at 50% 0%, #1a2d54 0%, #090d1a 80%);
+  transition:background 1.5s ease;
+}
+
+body.modo-nocturno {
+  background-image: radial-gradient(circle at 50% 0%, #0f162d 0%, #04060c 85%);
+}
+
+#pantallaInicio {
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background: radial-gradient(circle at 50% 30%, #1e355e 0%, #090d1a 90%);
+  transition:opacity 0.8s ease, visibility 0.8s;
+  padding:20px;
+}
+#pantallaInicio.oculta { opacity:0; visibility:hidden; pointer-events:none; }
+.contenido-inicio {
+  text-align:center;
+  max-width:440px;
+  background: rgba(15, 22, 42, 0.8);
+  border:1px solid rgba(255,255,255,0.25);
+  padding:36px 28px;
+  border-radius:32px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.6);
+  animation: floatStart 4s ease-in-out infinite;
+}
+@keyframes floatStart { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.icono-inicio {
+  font-size:64px;
+  margin-bottom:12px;
+  display:inline-block;
+  filter:drop-shadow(0 0 18px rgba(79,168,255,0.8));
+  animation: pulseIcon 2s infinite ease-in-out;
+}
+@keyframes pulseIcon { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+.btn-entrar {
+  margin-top:24px;
+  padding:16px 44px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.4);
+  background:linear-gradient(135deg, var(--accent-teal), var(--accent-blue) 50%, var(--accent-purple));
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:2px;
+  cursor:pointer;
+  box-shadow:0 8px 30px rgba(54,209,220,0.4);
+  transition:all 0.3s ease;
+}
+.btn-entrar:hover { transform:scale(1.05); box-shadow:0 12px 35px rgba(54,209,220,0.6); }
+.btn-entrar:active { transform:scale(0.96); }
+
+#efectos { position:fixed;inset:0;pointer-events:none;z-index:15;overflow:hidden }
+.particula {
+  position:absolute;
+  top:-40px;
+  left:var(--left);
+  font-size:var(--size);
+  opacity:0;
+  animation:fallParticle var(--duration) linear forwards;
+  filter:drop-shadow(0 0 6px rgba(255,255,255,0.5));
+}
+@keyframes fallParticle {
+  0%{transform:translateY(0) rotate(0deg);opacity:0}
+  15%{opacity:0.85}
+  85%{opacity:0.85}
+  100%{transform:translateY(105vh) rotate(360deg);opacity:0}
+}
+
+.encabezado { padding:42px 20px 18px; text-align:center }
+h1 { font:600 clamp(2.4rem, 6vw, 4rem) "Cormorant Garamond", serif; letter-spacing:-0.5px }
+h1 span {
+  background: linear-gradient(135deg, #7ad3ff, #36d1dc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:0 0 30px rgba(54,209,220,0.3);
+}
+.sub-header { color:var(--text-sub); font-size:14px; margin-top:6px; letter-spacing:0.5px }
+
+main { width:min(900px, 92%); margin:auto; padding-bottom:40px }
+
+.panel {
+  position:relative;
+  margin-bottom:24px;
+  padding:26px 22px;
+  border:1px solid var(--glass-border);
+  border-radius:28px;
+  background:var(--glass-bg);
+  backdrop-filter:blur(24px);
+  box-shadow:0 16px 40px rgba(0,0,0,0.35);
+  text-align:center;
+}
+.estadisticas { display:flex; justify-content:center; gap:14px; margin:20px 0; flex-wrap:wrap }
+.dato {
+  flex:1;
+  min-width:100px;
+  max-width:140px;
+  padding:14px 10px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+}
+.dato span { display:block; color:#7ad3ff; font-size:1.6rem; font-weight:700 }
+.dato small { color:var(--text-sub); font-size:10px; letter-spacing:1px }
+
+.jardin-seccion {
+  position:relative;
+  overflow:hidden;
+  margin-bottom:26px;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:32px;
+  height:380px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  cursor:pointer;
+  background:#0d1b2a;
+}
+#canvasJardin { width:100%; height:100%; display:block }
+.jardin-overlay-tag {
+  position:absolute;
+  bottom:16px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(9, 13, 26, 0.85);
+  padding:10px 24px;
+  border-radius:99px;
+  border:1px solid rgba(255,255,255,0.3);
+  font-size:13px;
+  color:#e0f2ff;
+  font-weight:600;
+  letter-spacing:1px;
+  backdrop-filter:blur(12px);
+  pointer-events:none;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:90;
+  padding:20px;
+  overflow-y:auto;
+  align-items:center;
+  justify-content:center;
+  background:rgba(4, 7, 15, 0.88);
+  backdrop-filter:blur(16px);
+}
+.modal.visible { display:flex; animation:fadeIn 0.3s ease-out }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.carta {
+  position:relative;
+  width:min(520px, 100%);
+  padding:32px 26px;
+  border:1px solid rgba(79,168,255,0.4);
+  border-radius:28px;
+  background:linear-gradient(150deg, #152238 0%, #0b1222 100%);
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.cerrar {
+  position:absolute;
+  top:12px; right:18px;
+  border:none;
+  background:transparent;
+  color:var(--text-sub);
+  font-size:2rem;
+  cursor:pointer;
+  transition:color 0.2s;
+}
+.cerrar:hover { color:#fff }
+.texto-carta {
+  color:#e2edfd;
+  line-height:1.8;
+  text-align:left;
+  white-space:pre-line;
+  font-size:14.5px;
+  margin:18px 0;
+  max-height:55vh;
+  overflow-y:auto;
+  padding-right:8px;
+}
+
+#panoramaJardin {
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:none;
+  background:#050811;
+  flex-direction:column;
+}
+#panoramaJardin.visible { display:flex; animation:fadeIn 0.4s }
+.panorama-top {
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  background:linear-gradient(180deg, rgba(5,8,17,0.85), transparent);
+  z-index:30;
+  position:absolute;
+  top:0; left:0; right:0;
+}
+.panorama-viewport {
+  flex:1;
+  overflow:hidden;
+  position:relative;
+  touch-action:pan-y;
+  cursor:grab;
+}
+.panorama-track {
+  display:flex;
+  width:400%;
+  height:100%;
+  transition:transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.escena-wrap {
+  width:25%;
+  height:100%;
+  position:relative;
+  flex-shrink:0;
+  overflow:hidden;
+  background-size:cover;
+  background-position:center;
+}
+
+.escena-1 { background-image:url('https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=2000&q=85'); }
+.escena-2 { background-image:url('https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=2000&q=85'); }
+.escena-3 { background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85'); }
+.escena-4 { background-image:url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2000&q=85'); }
+
+.sun-rays {
+  position:absolute; inset:0; pointer-events:none; z-index:2;
+  background: radial-gradient(circle at 80% 20%, rgba(255,235,170,0.25) 0%, transparent 65%);
+}
+
+.vida-layer {
+  position:absolute; inset:0; z-index:10; pointer-events:none;
+}
+.animal-animado {
+  position:absolute; z-index:12; cursor:pointer; font-size:32px;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  pointer-events:auto;
+  transition: transform 0.3s;
+}
+.animal-animado:hover { transform: scale(1.3); }
+
+@keyframes flyButterfly1 {
+  0%{ transform: translate(-40px, 50vh) scale(0.8) rotate(-10deg); }
+  50%{ transform: translate(45vw, 15vh) scale(1.1) rotate(15deg); }
+  100%{ transform: translate(105vw, 40vh) scale(0.9) rotate(-5deg); }
+}
+@keyframes flyBee1 {
+  0%{ transform: translate(10vw, 60vh) scale(0.9); }
+  50%{ transform: translate(60vw, 25vh) scale(1.1); }
+  100%{ transform: translate(95vw, 55vh) scale(0.9); }
+}
+@keyframes fireflyFloat {
+  0%{ transform: translate(20vw, 70vh) scale(0.7); opacity: 0.2; }
+  50%{ transform: translate(50vw, 30vh) scale(1.2); opacity: 1; }
+  100%{ transform: translate(80vw, 65vh) scale(0.8); opacity: 0.2; }
+}
+
+.zona-limpia {
+  position:absolute;
+  z-index:22;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.zona-limpia:hover {
+  background: transparent;
+}
+.zona-limpia.flash { animation:flashAnim 0.6s ease-out }
+@keyframes flashAnim {
+  0%{ background:rgba(54,209,220,0.4); box-shadow:0 0 20px #36d1dc }
+  100%{ background:transparent }
+}
+
+.flecha-pc {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:35;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(9,13,26,0.65);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;
+  font-size:24px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+  transition:all 0.2s;
+}
+.flecha-pc:hover { background:rgba(54,209,220,0.5); border-color:#36d1dc }
+.flecha-pc.izq { left:18px } .flecha-pc.der { right:18px }
+@media(min-width:768px){ .flecha-pc{ display:flex } }
+
+#ramoBar {
+  position:absolute;
+  bottom:56px;
+  left:50%;
+  transform:translateX(-50%) translateY(90px);
+  background:rgba(15,22,42,0.95);
+  border:1px solid rgba(54,209,220,0.4);
+  border-radius:30px;
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  z-index:35;
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  backdrop-filter:blur(16px);
+  opacity:0;
+  pointer-events:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+#ramoBar.visible { transform:translateX(-50%) translateY(0); opacity:1; pointer-events:auto }
+
+.indicadores {
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:35;
+}
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.4); transition:all 0.3s }
+.dot.activo { background:#36d1dc; width:24px; border-radius:12px }
+
+.music-control {
+  position:fixed;
+  bottom:20px; right:20px;
+  z-index:40;
+  width:46px; height:46px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.25);
+  background:rgba(15,22,42,0.85);
+  color:#7ad3ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
+  transition:transform 0.2s;
+}
+.music-control:hover { transform:scale(1.08) }
+</style>
+</head>
+<body>
+
+<audio id="musicaFondo" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-ambient-111154.mp3" type="audio/mpeg">
+</audio>
+
+<button id="btnMusica" class="music-control" title="Música de ambiente">🎵</button>
+
+<!-- Pantalla de Bienvenida -->
+<div id="pantallaInicio">
+  <div class="contenido-inicio">
+    <div class="icono-inicio">🌿</div>
+    <h1 style="font:600 2.5rem 'Cormorant Garamond',serif">Para <span style="color:#7ad3ff">Jazmín</span></h1>
+    <p style="margin-top:8px;color:var(--text-sub);font-size:14px">Un espacio natural en movimiento dedicado a nuestra amistad.</p>
+    <button class="btn-entrar" id="btnEntrar">DESCUBRIR JARDÍN ✨</button>
+  </div>
+</div>
+
+<div id="efectos"></div>
+
+<header class="encabezado">
+  <h1>El Jardín de <span>Jazmín</span></h1>
+  <p class="sub-header">Semana <span id="numSemana">0</span> • Detalle: <span id="tipoFlorActual">Flores Silvestres</span></p>
+</header>
+
+<main>
+  <section class="panel">
+    <div style="font-size:22px;letter-spacing:6px;margin-bottom:10px">🌱 🌿 🌼 🌸 🪻 🍃 🪵 ✨</div>
+    <h2 style="font:600 1.5rem 'Cormorant Garamond',serif">Rincones explorados</h2>
+    <div class="estadisticas">
+      <div class="dato"><span id="totalFlores">0</span><small>LUGARES</small></div>
+      <div class="dato"><span id="semanas">0</span><small>SEMANAS</small></div>
+      <div class="dato"><span id="tiposDescubiertos">0</span><small>DETALLES</small></div>
+    </div>
+    <p id="proximaFlor" style="font-size:13px;color:var(--text-sub);margin-top:6px"></p>
+    <div id="listaFlores" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+  </section>
+
+  <section class="jardin-seccion" id="jardinSeccion">
+    <canvas id="canvasJardin"></canvas>
+    <div class="jardin-overlay-tag">
+      <span>✨ Toca aquí para explorar los 4 mundos panorámicos</span>
+    </div>
+  </section>
+
+  <section class="panel" style="padding:28px">
+    <div style="font-size:2.2rem;margin-bottom:6px">📜</div>
+    <h2 style="font:600 1.4rem 'Cormorant Garamond',serif">Nota de la semana</h2>
+    <p style="font-size:13px;color:var(--text-sub);margin-bottom:16px">Un mensaje sincero dedicado a nuestra amistad</p>
+    <button id="abrirCarta" class="btn-entrar" style="margin-top:0;padding:12px 32px">LEER NOTA ✨</button>
+  </section>
+</main>
+
+<!-- Modal Carta -->
+<div id="modalCarta" class="modal">
+  <article class="carta">
+    <button id="cerrarCarta" class="cerrar">×</button>
+    <div style="font-size:2.2rem">🌿</div>
+    <h2 style="color:#7ad3ff;font-family:'Cormorant Garamond',serif;font-size:1.6rem">Mensaje Semanal</h2>
+    <div id="textoCarta" class="texto-carta"></div>
+    <button id="finalizarCarta" class="btn-entrar" style="padding:10px 28px">Cerrar 👍</button>
+  </article>
+</div>
+
+<!-- Modal Recuerdo / Detalle -->
+<div id="modalRecuerdo" class="modal">
+  <article class="carta">
+    <button id="cerrarRecuerdo" class="cerrar">×</button>
+    <div id="recuerdoIcono" style="font-size:2.8rem">🌿</div>
+    <div id="recuerdoNombre" style="font-size:11px;letter-spacing:2px;color:#7ad3ff;margin-top:6px"></div>
+    <div id="recuerdoTexto" class="texto-carta"></div>
+    <button id="btnCerrarRecuerdo2" class="btn-entrar" style="padding:10px 28px">Cerrar 👍</button>
+  </article>
+</div>
+
+<!-- Fullscreen 4-Scene Panorama Modal -->
+<div id="panoramaJardin">
+  <div class="panorama-top">
+    <button id="btnLimpiarRamo" style="display:none;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px">🗑️ Limpiar selección</button>
+    <button id="cerrarPanorama" style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.3);color:white;width:38px;height:38px;border-radius:50%;cursor:pointer;backdrop-filter:blur(6px);margin-left:auto">✕</button>
+  </div>
+  <div class="panorama-viewport" id="viewport">
+    <div class="panorama-track" id="track">
+
+      <!-- Scene 1: Botanical Sakura Garden -->
+      <div class="escena-wrap escena-1">
+        <div class="sun-rays"></div>
+        <div class="vida-layer" id="vida1"></div>
+        <div class="zona-limpia" style="left:8%; top:18%; width:26%; height:32%;" data-flor="0"></div>
+        <div class="zona-limpia" style="left:40%; top:22%; width:24%; height:28%;" data-flor="1"></div>
+        <div class="zona-limpia" style="left:68%; top:15%; width:25%; height:35%;" data-flor="2"></div>
+        <div class="zona-limpia" style="left:12%; bottom:12%; width:32%; height:32%;" data-flor="3"></div>
+        <div class="zona-limpia" style="left:52%; bottom:12%; width:36%; height:32%;" data-flor="4"></div>
+      </div>
+
+      <!-- Scene 2: Infinite Wind Tulip Field -->
+      <div class="escena-wrap escena-2">
+        <div class="sun-rays"></div>
+        <div class="vida-layer" id="vida2"></div>
+        <div class="zona-limpia" style="left:6%; bottom:16%; width:26%; height:42%;" data-flor="5"></div>
+        <div class="zona-limpia" style="left:36%; bottom:14%; width:28%; height:46%;" data-flor="6"></div>
+        <div class="zona-limpia" style="left:68%; bottom:16%; width:26%; height:42%;" data-flor="7"></div>
+        <div class="zona-limpia" style="left:30%; top:20%; width:40%; height:24%;" data-flor="8"></div>
+      </div>
+
+      <!-- Scene 3: Alpine Mountain Valley -->
+      <div class="escena-wrap escena-3">
+        <div class="sun-rays"></div>
+        <div class="vida-layer" id="vida3"></div>
+        <div class="zona-limpia" style="left:8%; top:12%; width:34%; height:34%;" data-flor="9"></div>
+        <div class="zona-limpia" style="left:55%; top:12%; width:36%; height:34%;" data-flor="10"></div>
+        <div class="zona-limpia" style="left:12%; bottom:14%; width:34%; height:34%;" data-flor="11"></div>
+        <div class="zona-limpia" style="left:52%; bottom:14%; width:36%; height:34%;" data-flor="12"></div>
+      </div>
+
+      <!-- Scene 4: Golden River Sunset -->
+      <div class="escena-wrap escena-4">
+        <div class="sun-rays"></div>
+        <div class="vida-layer" id="vida4"></div>
+        <div class="zona-limpia" style="left:10%; top:14%; width:80%; height:25%;" data-flor="13"></div>
+        <div class="zona-limpia" style="left:15%; top:44%; width:70%; height:22%;" data-flor="14"></div>
+        <div class="zona-limpia" style="left:10%; bottom:10%; width:80%; height:24%;" data-flor="15"></div>
+      </div>
+
+    </div>
+    <button class="flecha-pc izq" id="flechaIzq">‹</button>
+    <button class="flecha-pc der" id="flechaDer">›</button>
+    <div id="ramoBar">
+      <span id="ramoTexto">🌿 0 seleccionados</span>
+      <button id="btnVerRamo" style="background:linear-gradient(100deg,#36d1dc,#4fa8ff);border:none;color:white;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600">Ver detalles 🌿</button>
+    </div>
+    <div class="indicadores">
+      <div class="dot activo"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const FECHA_INICIO = "2026-10-10";
+const jardinSeccion = document.getElementById("jardinSeccion");
+const pantallaInicio = document.getElementById("pantallaInicio");
+const btnEntrar = document.getElementById("btnEntrar");
+const efectos = document.getElementById("efectos");
+const musica = document.getElementById("musicaFondo");
+const btnMusica = document.getElementById("btnMusica");
+const panoramaJardin = document.getElementById("panoramaJardin");
+const track = document.getElementById("track");
+const viewport = document.getElementById("viewport");
+
+const horaActual = new Date().getHours();
+if (horaActual >= 18 || horaActual < 6) {
+  document.body.classList.add("modo-nocturno");
+}
+
+const COLORES = ["#4fa8ff", "#36d1dc", "#7ad3ff", "#ffb4e5", "#b4e5ff"];
+const SIMBOLOS = ["🌿", "🍃", "🌸", "✨", "🌼", "🦋", "🐱"];
+
+const FLORES_INFO = [
+  { 
+    nombre:"Bosque de Sakura", emoji:"🌸", desc:"Jardín Principal", 
+    mensaje:"Jazmín, tus estudios son el cimiento de algo grandioso. Sé que a veces la exigencia abruma, pero cada hora invertida te acerca más a tus metas. Tienes una mente brillante y capaz; cree siempre en el talento que tienes." 
+  },
+  { 
+    nombre:"Árbol Roble Antiguo", emoji:"🌳", desc:"Centro del Sendero", 
+    mensaje:"Pagar las cuotas del banco y avanzar hacia la compra de tu propio terreno es una muestra enorme de tu madurez y esfuerzo. Cada pago, por más pesado que se sienta, es un ladrillo más construyendo tu independencia y futuro." 
+  },
+  { 
+    nombre:"Colinas Lejanas", emoji:"⛰️", desc:"Vista al Horizonte", 
+    mensaje:"Nunca olvides a Gary, tu gatito aventurero 🐱. Su ternura y compañía son un recordatorio constante de las cosas bonitas de la vida. Darle cariño y cuidarlo también demuestra la nobleza enorme que hay en tu corazón." 
+  },
+  { 
+    nombre:"Pinos Silvestres", emoji:"🌲", desc:"Lado del Sendero", 
+    mensaje:"Tu empatía con las personas y los animalitos es algo verdaderamente especial. La forma en que te preocupas y ayudas a los demás habla de un corazón puro y bondadoso que ilumina la vida de quienes te rodean." 
+  },
+  { 
+    nombre:"Jardín de Margaritas", emoji:"🤍", desc:"Entrada", 
+    mensaje:"Cuando sientas miedo al futuro o a los retos económicos, respira hondo. El miedo es solo una emoción pasajera; tu determinación para cumplir con tus obligaciones y salir adelante es infinitamente más fuerte." 
+  },
+  { 
+    nombre:"Tulipanes Azules y Dorados", emoji:"🌷", desc:"Campo Abierto", 
+    mensaje:"Celebrar tus pequeños logros es clave: abonar una cuota, aprobar un examen o ver a Gary dormido a tu lado con paz 🐱. Cada pequeño paso cuenta y suma en tu camino hacia el éxito." 
+  },
+  { 
+    nombre:"Sendero del Campo", emoji:"🛤️", desc:"Centro del Valle", 
+    mensaje:"Tus estudios abren puertas y tu esfuerzo financiero te da libertad. Sigue avanzando con paso firme; estás construyendo las bases de un espacio propio donde vivirás momentos maravillosos." 
+  },
+  { 
+    nombre:"Molino de Viento", emoji:"⚙️", desc:"Colina Tulipanes", 
+    mensaje:"La empatía que muestras con cada ser vivo demuestra tu sensibilidad única. Trata a tus metas y a ti misma con esa misma comprensión y paciencia cuando las cosas se pongan difíciles." 
+  },
+  { 
+    nombre:"Cielo Luminoso", emoji:"☁️", desc:"Campo de Tulipanes", 
+    mensaje:"Gary sabe perfectamente lo afortunado que es de tenerte 🐱. Esa misma dedicación con la que cuidas de él y de los animalitos es la que te guiará para lograr todo lo que te propongas." 
+  },
+  { 
+    nombre:"Montañas Nevadas", emoji:"🏔️", desc:"Cumbre del Valle", 
+    mensaje:"Organizar tus gastos y cumplir con el banco no es fácil, pero demuestra tu gran resiliencia. Muy pronto mirarás atrás y verás que todo ese esfuerzo valió totalmente la pena al ver tu terreno listo." 
+  },
+  { 
+    nombre:"Arroyo de Montaña", emoji:"🏞️", desc:"Valle Alpino", 
+    mensaje:"En tus estudios, confía en tu proceso de aprendizaje. No te desanimes si un tema cuesta trabajo; la persistencia vence al talento cuando el talento no se esfuerza, ¡y tú tienes ambos!" 
+  },
+  { 
+    nombre:"Bosque de Abetos", emoji:"🌲", desc:"Ladera del Valle", 
+    mensaje:"Tu amabilidad no pasa desapercibida. Tu capacidad de ponerte en el lugar de los demás y apoyar a quienes lo necesitan es un don precioso que te hace una persona verdaderamente valiosa." 
+  },
+  { 
+    nombre:"Pradera de Flores", emoji:"🪻", desc:"Pie de Montaña", 
+    mensaje:"Si en algún momento el cansancio te gana, haz una pausa, acaricia a Gary 🐱 y recarga energías. Descansar también forma parte de avanzar con fuerza hacia tus sueños." 
+  },
+  { 
+    nombre:"Río Dorado", emoji:"🌊", desc:"Río al Atardecer", 
+    mensaje:"Fuerza con tus proyectos, tus finanzas y tus clases. Tienes la valentía necesaria para superar cualquier temor y conquistar cada una de tus metas con la cabeza en alto." 
+  },
+  { 
+    nombre:"Cielo de Atardecer", emoji:"🌅", desc:"Horizonte Cálido", 
+    mensaje:"Tu terreno, tus logros académicos y el bienestar de los tuyos son tu recompensa. Sigue caminando con la misma luz, empatía y dedicación de siempre." 
+  },
+  { 
+    nombre:"Bosque de la Orilla", emoji:"🍃", desc:"Orilla del Río", 
+    mensaje:"Abraza tu presente con orgullo y confianza. Aquí tienes a un amigo incondicional que siempre estará apoyándote y celebrando cada uno de tus triunfos." 
+  }
+];
+
+function getMensajeInfinito(semana) {
+  const flor = FLORES_INFO[semana % FLORES_INFO.length];
+  return `¡Hola Jazmín!\n\n${flor.mensaje}\n\nUn abrazo gigante y todo mi apoyo,\nTu amigo, Tonycito 🌿`;
+}
+
+function convertirFecha(t) {
+  const [a, m, d] = t.split("-").map(Number);
+  return new Date(a, m - 1, d);
+}
+
+function obtenerSemanas() {
+  const ini = convertirFecha(FECHA_INICIO);
+  const hoy = new Date();
+  ini.setHours(0,0,0,0);
+  hoy.setHours(0,0,0,0);
+  if (hoy < ini) return 0;
+  return Math.floor((hoy - ini) / (7 * 24 * 60 * 60 * 1000));
+}
+
+function actualizarJardinStats() {
+  const tr = obtenerSemanas();
+  const cant = Math.max(5, tr + 3);
+  document.getElementById("numSemana").textContent = tr + 1;
+  document.getElementById("semanas").textContent = tr;
+  document.getElementById("totalFlores").textContent = cant;
+  document.getElementById("tiposDescubiertos").textContent = Math.min(cant, FLORES_INFO.length);
+  document.getElementById("tipoFlorActual").textContent = FLORES_INFO[tr % FLORES_INFO.length].nombre;
+  
+  const sig = convertirFecha(FECHA_INICIO);
+  sig.setDate(sig.getDate() + (tr + 1) * 7);
+  document.getElementById("proximaFlor").textContent = `Próximo detalle: ${FLORES_INFO[(tr + 1) % FLORES_INFO.length].nombre} (${sig.toLocaleDateString("es-PE", { day: "numeric", month: "long" })})`;
+  
+  const lista = document.getElementById("listaFlores");
+  lista.innerHTML = "";
+  for (let i = 0; i < Math.min(cant, FLORES_INFO.length); i++) {
+    const chip = document.createElement("span");
+    chip.style.cssText = "font-size:11px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18)";
+    chip.textContent = FLORES_INFO[i].emoji + " " + FLORES_INFO[i].nombre;
+    lista.appendChild(chip);
+  }
+}
+
+const canvasJardin = document.getElementById("canvasJardin");
+const ctxJardin = canvasJardin.getContext("2d");
+
+function resizeMainCanvas() {
+  const rect = jardinSeccion.getBoundingClientRect();
+  canvasJardin.width = rect.width * window.devicePixelRatio || rect.width;
+  canvasJardin.height = rect.height * window.devicePixelRatio || rect.height;
+}
+window.addEventListener("resize", resizeMainCanvas);
+resizeMainCanvas();
+
+let windTime = 0;
+const mainPetals = [];
+
+for (let i = 0; i < 40; i++) {
+  mainPetals.push({
+    x: Math.random() * 1000,
+    y: Math.random() * 400,
+    r: 3 + Math.random() * 5,
+    speedY: 0.8 + Math.random() * 1.2,
+    speedX: 0.5 + Math.random() * 1,
+    angle: Math.random() * Math.PI * 2
+  });
+}
+
+function drawMainGardenScene() {
+  const w = canvasJardin.width;
+  const h = canvasJardin.height;
+  windTime += 0.02;
+
+  ctxJardin.clearRect(0, 0, w, h);
+
+  const skyGrad = ctxJardin.createLinearGradient(0, 0, 0, h * 0.65);
+  skyGrad.addColorStop(0, "#122a52");
+  skyGrad.addColorStop(0.5, "#2a548a");
+  skyGrad.addColorStop(1, "#66a0db");
+  ctxJardin.fillStyle = skyGrad;
+  ctxJardin.fillRect(0, 0, w, h);
+
+  const sunX = w * 0.82;
+  const sunY = h * 0.22;
+  const sunGlow = ctxJardin.createRadialGradient(sunX, sunY, 5, sunX, sunY, 90);
+  sunGlow.addColorStop(0, "rgba(255, 250, 210, 0.95)");
+  sunGlow.addColorStop(0.35, "rgba(255, 215, 120, 0.5)");
+  sunGlow.addColorStop(1, "rgba(255, 215, 120, 0)");
+  ctxJardin.fillStyle = sunGlow;
+  ctxJardin.beginPath();
+  ctxJardin.arc(sunX, sunY, 90, 0, Math.PI * 2);
+  ctxJardin.fill();
+
+  ctxJardin.fillStyle = "#1b3a5b";
+  ctxJardin.beginPath();
+  ctxJardin.moveTo(0, h * 0.62);
+  ctxJardin.quadraticCurveTo(w * 0.3, h * 0.5, w * 0.6, h * 0.6);
+  ctxJardin.quadraticCurveTo(w * 0.8, h * 0.68, w, h * 0.56);
+  ctxJardin.lineTo(w, h);
+  ctxJardin.lineTo(0, h);
+  ctxJardin.fill();
+
+  ctxJardin.fillStyle = "#26543b";
+  ctxJardin.beginPath();
+  ctxJardin.moveTo(0, h * 0.66);
+  ctxJardin.quadraticCurveTo(w * 0.35, h * 0.56, w * 0.72, h * 0.66);
+  ctxJardin.quadraticCurveTo(w * 0.88, h * 0.7, w, h * 0.62);
+  ctxJardin.lineTo(w, h);
+  ctxJardin.lineTo(0, h);
+  ctxJardin.fill();
+
+  const grassGrad = ctxJardin.createLinearGradient(0, h * 0.65, 0, h);
+  grassGrad.addColorStop(0, "#388e3c");
+  grassGrad.addColorStop(1, "#1b4d24");
+  ctxJardin.fillStyle = grassGrad;
+  ctxJardin.beginPath();
+  ctxJardin.moveTo(0, h * 0.68);
+  ctxJardin.quadraticCurveTo(w * 0.5, h * 0.64, w, h * 0.7);
+  ctxJardin.lineTo(w, h);
+  ctxJardin.lineTo(0, h);
+  ctxJardin.fill();
+
+  ctxJardin.strokeStyle = "#4caf50";
+  ctxJardin.lineWidth = 2.5;
+  const numBlades = Math.floor(w / 12);
+  for (let i = 0; i < numBlades; i++) {
+    const gx = i * 13;
+    const gy = h * 0.7 + (Math.sin(i * 88) * 18);
+    const bladeHeight = 28 + Math.sin(i * 14) * 14;
+    const sway = Math.sin(windTime + i * 0.3) * 14;
+
+    ctxJardin.beginPath();
+    ctxJardin.moveTo(gx, gy);
+    ctxJardin.quadraticCurveTo(gx + sway * 0.5, gy - bladeHeight * 0.6, gx + sway, gy - bladeHeight);
+    ctxJardin.stroke();
+  }
+
+  const numElementos = 21;
+  for (let i = 0; i < numElementos; i++) {
+    const fx = (w * 0.04) + (i * (w * 0.92 / numElementos));
+    const fy = h * 0.72 + Math.sin(i * 28) * 35;
+    const sway = Math.sin(windTime + i * 0.6) * 8;
+
+    const tipo = i % 7;
+    const tipX = fx + sway;
+    const tipY = fy;
+
+    if (tipo === 0) {
+      ctxJardin.strokeStyle = "#2e7d32";
+      ctxJardin.lineWidth = 3;
+      ctxJardin.beginPath(); ctxJardin.moveTo(fx, fy + 45); ctxJardin.lineTo(tipX, tipY); ctxJardin.stroke();
+      ctxJardin.fillStyle = i % 2 === 0 ? "#4fa8ff" : "#ffde59";
+      ctxJardin.beginPath();
+      ctxJardin.moveTo(tipX - 8, tipY + 12);
+      ctxJardin.bezierCurveTo(tipX - 12, tipY - 8, tipX - 2, tipY - 14, tipX, tipY - 16);
+      ctxJardin.bezierCurveTo(tipX + 2, tipY - 14, tipX + 12, tipY - 8, tipX + 8, tipY + 12);
+      ctxJardin.closePath(); ctxJardin.fill();
+    } 
+    else if (tipo === 1) {
+      ctxJardin.strokeStyle = "#2e7d32"; ctxJardin.lineWidth = 3;
+      ctxJardin.beginPath(); ctxJardin.moveTo(fx, fy + 45); ctxJardin.lineTo(tipX, tipY); ctxJardin.stroke();
+      ctxJardin.fillStyle = "#ffffff";
+      for (let p = 0; p < 6; p++) {
+        const ang = p * (Math.PI / 3) + windTime * 0.1;
+        ctxJardin.beginPath(); ctxJardin.arc(tipX + Math.cos(ang) * 8, tipY + Math.sin(ang) * 8, 5.5, 0, Math.PI * 2); ctxJardin.fill();
+      }
+      ctxJardin.fillStyle = "#ffb703";
+      ctxJardin.beginPath(); ctxJardin.arc(tipX, tipY, 4, 0, Math.PI * 2); ctxJardin.fill();
+    }
+    else if (tipo === 2) {
+      ctxJardin.strokeStyle = "#5c4033"; ctxJardin.lineWidth = 3.5;
+      ctxJardin.beginPath(); ctxJardin.moveTo(fx, fy + 45); ctxJardin.lineTo(tipX, tipY - 5); ctxJardin.stroke();
+      ctxJardin.fillStyle = "#ffb4e5";
+      for (let p = 0; p < 5; p++) {
+        const pAngle = (p * Math.PI * 2 / 5);
+        ctxJardin.beginPath(); ctxJardin.arc(tipX + Math.cos(pAngle) * 9, (tipY - 5) + Math.sin(pAngle) * 9, 6, 0, Math.PI * 2); ctxJardin.fill();
+      }
+      ctxJardin.fillStyle = "#fff";
+      ctxJardin.beginPath(); ctxJardin.arc(tipX, tipY - 5, 3.5, 0, Math.PI * 2); ctxJardin.fill();
+    }
+    else if (tipo === 3) {
+      ctxJardin.fillStyle = "#1b4d24";
+      ctxJardin.beginPath();
+      ctxJardin.moveTo(tipX, tipY - 20);
+      ctxJardin.lineTo(tipX - 12, tipY + 10);
+      ctxJardin.lineTo(tipX + 12, tipY + 10);
+      ctxJardin.closePath(); ctxJardin.fill();
+      ctxJardin.fillStyle = "#2e7d32";
+      ctxJardin.beginPath();
+      ctxJardin.moveTo(tipX, tipY - 32);
+      ctxJardin.lineTo(tipX - 9, tipY - 2);
+      ctxJardin.lineTo(tipX + 9, tipY - 2);
+      ctxJardin.closePath(); ctxJardin.fill();
+    }
+    else if (tipo === 4) {
+      ctxJardin.fillStyle = "#5c4033"; ctxJardin.fillRect(tipX - 3, tipY, 6, 25);
+      ctxJardin.fillStyle = "#2d6a4f";
+      ctxJardin.beginPath(); ctxJardin.arc(tipX, tipY - 6, 14, 0, Math.PI * 2); ctxJardin.fill();
+    }
+    else if (tipo === 5) {
+      ctxJardin.strokeStyle = "#2e7d32"; ctxJardin.lineWidth = 2.5;
+      ctxJardin.beginPath(); ctxJardin.moveTo(fx, fy + 45); ctxJardin.lineTo(tipX, tipY); ctxJardin.stroke();
+      ctxJardin.fillStyle = "#7ad3ff";
+      ctxJardin.beginPath(); ctxJardin.arc(tipX, tipY - 4, 7, 0, Math.PI * 2); ctxJardin.fill();
+      ctxJardin.fillStyle = "#fff";
+      ctxJardin.beginPath(); ctxJardin.arc(tipX, tipY - 4, 3, 0, Math.PI * 2); ctxJardin.fill();
+    }
+    else {
+      ctxJardin.strokeStyle = "#2e7d32"; ctxJardin.lineWidth = 2.5;
+      ctxJardin.beginPath(); ctxJardin.moveTo(fx, fy + 45); ctxJardin.lineTo(tipX, tipY); ctxJardin.stroke();
+      ctxJardin.fillStyle = "#ffde59";
+      for(let s=0; s<4; s++){
+        const sa = s * Math.PI / 2;
+        ctxJardin.beginPath(); ctxJardin.arc(tipX + Math.cos(sa)*6, tipY + Math.sin(sa)*6, 4.5, 0, Math.PI * 2); ctxJardin.fill();
+      }
+    }
+  }
+
+  ctxJardin.fillStyle = "rgba(255, 192, 225, 0.85)";
+  mainPetals.forEach(p => {
+    p.y += p.speedY;
+    p.x += Math.sin(windTime + p.angle) * p.speedX;
+    if (p.y > h) { p.y = -10; p.x = Math.random() * w; }
+    if (p.x > w) p.x = 0;
+
+    ctxJardin.beginPath();
+    ctxJardin.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctxJardin.fill();
+  });
+
+  requestAnimationFrame(drawMainGardenScene);
+}
+drawMainGardenScene();
+
+function spawnAnimatedLife(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = "";
+
+  const b = document.createElement("div");
+  b.className = "animal-animado";
+  b.textContent = "🦋";
+  b.style.animation = "flyButterfly1 14s linear infinite";
+  container.appendChild(b);
+
+  const bee = document.createElement("div");
+  bee.className = "animal-animado";
+  bee.textContent = "🐝";
+  bee.style.animation = "flyBee1 10s linear infinite";
+  container.appendChild(bee);
+
+  const firefly = document.createElement("div");
+  firefly.className = "animal-animado";
+  firefly.textContent = "✨";
+  firefly.style.animation = "fireflyFloat 8s ease-in-out infinite";
+  container.appendChild(firefly);
+}
+
+const modalCarta = document.getElementById("modalCarta");
+const modalRecuerdo = document.getElementById("modalRecuerdo");
+let ramoSeleccionado = [];
+
+function actualizarBarRamo() {
+  const bar = document.getElementById("ramoBar");
+  const texto = document.getElementById("ramoTexto");
+  const btnLimpiar = document.getElementById("btnLimpiarRamo");
+  if (ramoSeleccionado.length === 0) {
+    bar.classList.remove('visible');
+    btnLimpiar.style.display = 'none';
+    return;
+  }
+  bar.classList.add('visible');
+  btnLimpiar.style.display = 'block';
+  texto.textContent = `🌿 ${ramoSeleccionado.length} seleccionados`;
+}
+
+function mostrarRamoCompleto() {
+  const textos = ramoSeleccionado.map(i => `• ${FLORES_INFO[i].emoji} ${FLORES_INFO[i].nombre}: ${FLORES_INFO[i].mensaje}`).join('\n\n');
+  const totalEmojis = ramoSeleccionado.map(i => FLORES_INFO[i].emoji).join('');
+  document.getElementById("recuerdoIcono").textContent = totalEmojis || '🌿';
+  document.getElementById("recuerdoNombre").textContent = `SELECCIÓN DE ${ramoSeleccionado.length} LUGARES • PARA JAZMÍN`;
+  document.getElementById("recuerdoTexto").textContent = `Jazmín, aquí tienes los rincones que has explorado:\n\n${textos}\n\nUn abrazo gigante y todo mi apoyo,\nTu amigo, Tonycito 🌿`;
+  modalRecuerdo.classList.add('visible');
+}
+
+function mostrarRecuerdo(n) {
+  const info = FLORES_INFO[n % FLORES_INFO.length];
+  document.getElementById("recuerdoIcono").textContent = info.emoji;
+  document.getElementById("recuerdoNombre").textContent = `${info.nombre.toUpperCase()} • ${info.desc}`;
+  document.getElementById("recuerdoTexto").textContent = info.mensaje;
+  modalRecuerdo.classList.add('visible');
+}
+
+function abrirPanorama() {
+  actualizarJardinStats();
+  panoramaJardin.classList.add('visible');
+  document.body.style.overflow = 'hidden';
+  irAMundo(0);
+  spawnAnimatedLife('vida1');
+  spawnAnimatedLife('vida2');
+  spawnAnimatedLife('vida3');
+  spawnAnimatedLife('vida4');
+}
+
+let mundoActual = 0;
+const totalMundos = 4;
+
+function irAMundo(n) {
+  if (n < 0) n = totalMundos - 1;
+  if (n >= totalMundos) n = 0;
+  mundoActual = n;
+  track.style.transform = `translateX(-${mundoActual * 25}%)`;
+  document.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("activo", i === mundoActual));
+}
+
+let startX = 0, currentX = 0, isDragging = false, startTime = 0;
+
+function inicioArrastre(x) { 
+  startX = x; 
+  currentX = x; 
+  isDragging = true; 
+  startTime = Date.now(); 
+  track.style.transition = 'none'; 
+}
+
+function movimientoArrastre(x) {
+  if (!isDragging) return;
+  currentX = x;
+  const diff = currentX - startX;
+  if (Math.abs(diff) < 5) return;
+  const base = -mundoActual * viewport.offsetWidth;
+  track.style.transform = `translateX(${base + diff}px)`;
+}
+
+function finArrastre() {
+  if (!isDragging) return;
+  isDragging = false;
+  track.style.transition = 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)';
+  const diff = currentX - startX;
+  const elapsed = Date.now() - startTime;
+  if (Math.abs(diff) > 60 && elapsed < 800) {
+    if (diff < 0) irAMundo(mundoActual + 1);
+    else irAMundo(mundoActual - 1);
+  } else {
+    irAMundo(mundoActual);
+  }
+}
+
+viewport.addEventListener('touchstart', e => { if (e.target.closest('.zona-limpia')) return; inicioArrastre(e.touches[0].clientX); }, { passive: true });
+viewport.addEventListener('touchmove', e => { if (e.target.closest('.zona-limpia')) return; movimientoArrastre(e.touches[0].clientX); }, { passive: true });
+viewport.addEventListener('touchend', finArrastre);
+viewport.addEventListener('mousedown', e => { if (e.target.closest('.zona-limpia') || e.target.closest('.flecha-pc')) return; e.preventDefault(); inicioArrastre(e.clientX); });
+window.addEventListener('mousemove', e => { movimientoArrastre(e.clientX); });
+window.addEventListener('mouseup', finArrastre);
+
+document.getElementById('flechaIzq').addEventListener('click', () => irAMundo(mundoActual - 1));
+document.getElementById('flechaDer').addEventListener('click', () => irAMundo(mundoActual + 1));
+
+document.querySelectorAll('.zona-limpia').forEach(flor => {
+  flor.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const n = parseInt(flor.dataset.flor);
+    flor.classList.remove('flash'); void flor.offsetWidth; flor.classList.add('flash');
+    setTimeout(() => flor.classList.remove('flash'), 600);
+    const idx = ramoSeleccionado.indexOf(n);
+    if (idx > -1) { ramoSeleccionado.splice(idx, 1); }
+    else { ramoSeleccionado.push(n); mostrarRecuerdo(n); }
+    actualizarBarRamo();
+  });
+});
+
+document.getElementById("btnVerRamo").addEventListener('click', mostrarRamoCompleto);
+document.getElementById("btnLimpiarRamo").addEventListener('click', () => { ramoSeleccionado = []; actualizarBarRamo(); });
+document.getElementById("cerrarPanorama").addEventListener('click', () => { panoramaJardin.classList.remove('visible'); document.body.style.overflow = 'auto'; });
+jardinSeccion.addEventListener('click', abrirPanorama);
+
+document.getElementById("abrirCarta").addEventListener('click', () => {
+  const tr = obtenerSemanas();
+  document.getElementById("textoCarta").textContent = getMensajeInfinito(tr);
+  modalCarta.classList.add('visible');
+});
+document.getElementById("cerrarCarta").addEventListener('click', () => modalCarta.classList.remove('visible'));
+document.getElementById("finalizarCarta").addEventListener('click', () => modalCarta.classList.remove('visible'));
+document.getElementById("cerrarRecuerdo").addEventListener('click', () => modalRecuerdo.classList.remove('visible'));
+document.getElementById("btnCerrarRecuerdo2").addEventListener('click', () => modalRecuerdo.classList.remove('visible'));
+
+btnEntrar.addEventListener('click', () => {
+  pantallaInicio.classList.add('oculta');
+  document.body.style.overflow = 'auto';
+  actualizarJardinStats();
+  musica.volume = 0.3;
+  musica.play().catch(() => {});
+});
+
+btnMusica.addEventListener('click', () => {
+  if (musica.paused) { musica.play(); btnMusica.textContent = '🎵'; }
+  else { musica.pause(); btnMusica.textContent = '🔇'; }
+});
+
+setInterval(() => {
+  const p = document.createElement("div");
+  p.className = "particula";
+  p.style.setProperty('--left', Math.random() * 100 + 'vw');
+  p.style.setProperty('--size', (12 + Math.random() * 16) + 'px');
+  p.style.setProperty('--duration', (7 + Math.random() * 6) + 's');
+  p.textContent = SIMBOLOS[Math.floor(Math.random() * SIMBOLOS.length)];
+  efectos.appendChild(p);
+  setTimeout(() => p.remove(), 13000);
+}, 800);
+
+actualizarJardinStats();
+</script>
+</body>
+</html>
